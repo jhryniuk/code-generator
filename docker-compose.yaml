@@ -1,0 +1,106 @@
+services:
+  api-php:
+    build:
+      context: .
+      dockerfile: docker/api-php/Dockerfile
+      args:
+        USERID: 1000
+    volumes:
+      - api:/var/www/html
+      - reports:/var/www/html/public/reports:ro
+    networks:
+      - default
+    expose:
+      - 9000
+    depends_on:
+      - db
+    environment:
+      APP_ENV: 'dev'
+      APP_SECRET: '0f4e9fce56a0fac70f6391e974def300'
+      DATABASE_URL: "mysql://root:toor@db:3306/wreport?serverVersion=8&charset=utf8mb4"
+
+  worker-php:
+    build:
+      context: .
+      dockerfile: docker/worker-php/Dockerfile
+      args:
+        USERID: 1000
+    volumes:
+      - worker:/var/www/html
+      - reports:/var/www/html/public/reports
+    networks:
+      - default
+    depends_on:
+      - db
+    environment:
+      APP_ENV: 'dev'
+      APP_SECRET: '0f4e9fce56a0fac70f6391e974def300'
+      DATABASE_URL: "mysql://root:toor@db:3306/wreport?serverVersion=8&charset=utf8mb4"
+
+  nginx:
+    image: nginx:1.23.2
+    ports:
+      - 80:80
+    volumes:
+      - api:/var/www/html
+      - reports:/var/www/html/public/reports:ro
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - default
+    depends_on:
+      - api-php
+
+  db:
+    image: mariadb:10.9.4
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_USER: wreport
+      MYSQL_PASSWORD: wreport
+      MYSQL_DATABASE: wreport
+    networks:
+      - default
+
+  rabbit:
+    image: rabbitmq:3.13.1-management
+    expose:
+      - 15672
+    volumes:
+      - ./docker/rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./docker/rabbit/definitions.json:/etc/rabbitmq/definitions.json:ro
+    environment:
+      RABBITMQ_DEFAULT_USER: 'wreport'
+      RABBITMQ_DEFAULT_PASS: 'wreport'
+    networks:
+      - default
+    ports:
+      - 15672:15672
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  api:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/api
+      o: bind
+  worker:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/worker
+      o: bind
+  reports:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/reports
+      o: bind
+
+  db:

@@ -1,0 +1,53 @@
+{
+  "users": [
+    {
+      "name": "wreport",
+      "password": "wreport",
+      "tags": ["administrator"]
+    }
+  ],
+  "permissions": [
+    {
+      "user": "wreport",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "vhosts":[
+    {"name":"/"}
+  ],
+  "queues": [
+    {
+      "name": "weather_report_queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "weather_report_exchange",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "weather_report_exchange",
+      "vhost": "/",
+      "destination": "weather_report_queue",
+      "destination_type": "queue",
+      "routing_key": "report",
+      "arguments": {}
+    }
+  ]
+}
