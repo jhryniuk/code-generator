@@ -6,8 +6,7 @@ services:
       args:
         USERID: 1000
     volumes:
-      - api:/var/www/html
-      - reports:/var/www/html/public/reports:ro
+      - api1:/var/www/html
     networks:
       - default
     expose:
@@ -17,7 +16,8 @@ services:
     environment:
       APP_ENV: 'dev'
       APP_SECRET: '0f4e9fce56a0fac70f6391e974def300'
-      DATABASE_URL: "mysql://root:toor@db:3306/wreport?serverVersion=8&charset=utf8mb4"
+      DATABASE_URL: "mysql://root:toor@db:3306/cgenerator?serverVersion=8&charset=utf8mb4"
+      MESSENGER_TRANSPORT_DSN: 'amqp://cgenerator:cgenerator@rabbit:5672/%2f/code_generator_queue'
 
   worker-php:
     build:
@@ -26,24 +26,23 @@ services:
       args:
         USERID: 1000
     volumes:
-      - worker:/var/www/html
-      - reports:/var/www/html/public/reports
+      - worker1:/var/www/html
     networks:
       - default
     depends_on:
-      - db
+      - rabbit
+      - api-php
     environment:
       APP_ENV: 'dev'
       APP_SECRET: '0f4e9fce56a0fac70f6391e974def300'
-      DATABASE_URL: "mysql://root:toor@db:3306/wreport?serverVersion=8&charset=utf8mb4"
+      MESSENGER_TRANSPORT_DSN: 'amqp://cgenerator:cgenerator@rabbit:5672/%2f/code_generator_queue'
 
   nginx:
     image: nginx:1.23.2
     ports:
       - 80:80
     volumes:
-      - api:/var/www/html
-      - reports:/var/www/html/public/reports:ro
+      - api1:/var/www/html
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - default
@@ -55,12 +54,12 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - db:/var/lib/mysql
+      - db1:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: toor
-      MYSQL_USER: wreport
-      MYSQL_PASSWORD: wreport
-      MYSQL_DATABASE: wreport
+      MYSQL_USER: cgenerator
+      MYSQL_PASSWORD: cgenerator
+      MYSQL_DATABASE: cgenerator
     networks:
       - default
 
@@ -72,8 +71,8 @@ services:
       - ./docker/rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - ./docker/rabbit/definitions.json:/etc/rabbitmq/definitions.json:ro
     environment:
-      RABBITMQ_DEFAULT_USER: 'wreport'
-      RABBITMQ_DEFAULT_PASS: 'wreport'
+      RABBITMQ_DEFAULT_USER: 'cgenerator'
+      RABBITMQ_DEFAULT_PASS: 'cgenerator'
     networks:
       - default
     ports:
@@ -84,23 +83,17 @@ networks:
     driver: bridge
 
 volumes:
-  api:
+  api1:
     driver: local
     driver_opts:
       type: none
       device: $PWD/api
       o: bind
-  worker:
+  worker1:
     driver: local
     driver_opts:
       type: none
       device: $PWD/worker
       o: bind
-  reports:
-    driver: local
-    driver_opts:
-      type: none
-      device: $PWD/reports
-      o: bind
 
-  db:
+  db1:

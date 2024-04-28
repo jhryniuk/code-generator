@@ -1,14 +1,14 @@
 {
   "users": [
     {
-      "name": "wreport",
-      "password": "wreport",
+      "name": "cgenerator",
+      "password": "cgenerator",
       "tags": ["administrator"]
     }
   ],
   "permissions": [
     {
-      "user": "wreport",
+      "user": "cgenerator",
       "vhost": "/",
       "configure": ".*",
       "write": ".*",
@@ -20,7 +20,7 @@
   ],
   "queues": [
     {
-      "name": "weather_report_queue",
+      "name": "code_generator_queue",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
@@ -31,7 +31,7 @@
   ],
   "exchanges": [
     {
-      "name": "weather_report_exchange",
+      "name": "code_generator_exchange",
       "vhost": "/",
       "type": "direct",
       "durable": true,
@@ -42,11 +42,11 @@
   ],
   "bindings": [
     {
-      "source": "weather_report_exchange",
+      "source": "code_generator_exchange",
       "vhost": "/",
-      "destination": "weather_report_queue",
+      "destination": "code_generator_queue",
       "destination_type": "queue",
-      "routing_key": "report",
+      "routing_key": "code",
       "arguments": {}
     }
   ]

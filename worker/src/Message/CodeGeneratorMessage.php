@@ -2,7 +2,7 @@
 
 namespace App\Message;
 
-class WeatherReportMessage
+class CodeGeneratorMessage
 {
     public function __construct(private string $message)
     {

@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\City;
+use App\Entity\Code;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<City>
+ * @extends ServiceEntityRepository<Code>
  *
- * @method City|null find($id, $lockMode = null, $lockVersion = null)
- * @method City|null findOneBy(array $criteria, array $orderBy = null)
- * @method City[]    findAll()
- * @method City[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Code|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Code|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Code[]    findAll()
+ * @method Code[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CityRepository extends ServiceEntityRepository
+class CodeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, City::class);
+        parent::__construct($registry, Code::class);
     }
 
     //    /**
-    //     * @return City[] Returns an array of City objects
+    //     * @return Code[] Returns an array of Code objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -36,7 +36,7 @@ class CityRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?City
+    //    public function findOneBySomeField($value): ?Code
     //    {
     //        return $this->createQueryBuilder('c')
     //            ->andWhere('c.exampleField = :val')

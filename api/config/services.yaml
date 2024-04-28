@@ -20,7 +20,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
     report.entity.subscriber:
-        class: App\Subscriber\ReportEntitySubscriber
+        class: App\Subscriber\CodeEntitySubscriber
         tags:
             - {name: doctrine.event_subscriber, connection: default}
 
