@@ -2,7 +2,7 @@
 
 function install {
   composer install -d /var/www/html
-  php /var/www/html/bin/console doctrine:migration:migrate -q
+  /var/www/html/bin/console doc:mig:mig -q
 }
 
 function run {
