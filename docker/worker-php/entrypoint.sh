@@ -5,7 +5,7 @@ function run {
 }
 
 function install {
-  composer -d /var/www/html install
+  composer install -d /var/www/html
 }
 
 if [ ! -d '/var/www/html/vendor' ]

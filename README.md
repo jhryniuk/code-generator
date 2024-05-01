@@ -26,11 +26,6 @@ make build
 ```
 
 ```shell
-# Builds required db
-make build-dp
-```
-
-```shell
 # Starts the project and install required dependencies
 make up
 ```
