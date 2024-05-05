@@ -16,3 +16,6 @@ down:
 	@echo 'Stop docker compose'
 	docker compose down
 
+react:
+	@echo 'Start docker compose react'
+	docker compose exec client generate-api-platform-client --resource book

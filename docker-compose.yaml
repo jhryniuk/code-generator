@@ -37,6 +37,10 @@ services:
       APP_SECRET: '0f4e9fce56a0fac70f6391e974def300'
       MESSENGER_TRANSPORT_DSN: 'amqp://cgenerator:cgenerator@rabbit:5672/%2f/code_generator_queue'
 
+  client:
+    image: node:20
+
+
   nginx:
     image: nginx:1.23.2
     ports:
