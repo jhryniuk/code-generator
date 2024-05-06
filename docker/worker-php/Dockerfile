@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.1-cli
 
 ARG USERID
 
@@ -14,7 +14,6 @@ RUN apt-get -qq update --fix-missing \
         librabbitmq-dev \
         g++ \
         libfreetype6-dev \
-        supervisor \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libxml2-dev \

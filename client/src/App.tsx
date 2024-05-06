@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 
 function App() {
-    const url = "http://localhost/api/codes";
+    const url = "http://nginx/api/codes";
     const [data, setData] = useState([]);
 
     const fetchInfo = () => {

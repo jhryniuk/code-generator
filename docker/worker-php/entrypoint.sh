@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function run {
-  php-fpm
+  /var/www/html/bin/console messenger:consume async
 }
 
 function install {
