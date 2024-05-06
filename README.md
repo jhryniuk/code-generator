@@ -18,11 +18,22 @@ Before you start this project on your local machine make sure that:
   * nginx
   * mysql
 
+**Access to services:**
+* rest api `http://localhost/api`
+* rabbitmq `http://localhost:15672`
+* mariadb by db client on port 3306
+* frontend `http://localhost:8080`
+
 **Running project**
 
 ```shell
 # Builds required docker images
 make build
+```
+
+```shell
+# Builds db
+make build-db
 ```
 
 ```shell
@@ -36,6 +47,20 @@ make worker
 ```
 
 ```shell
+# Stop the worker
+make worker-down
+```
+
+```shell
 # Shutting down the virtual environment
 make down
+```
+
+
+**Order commands to start up the project:**
+```shell
+make build
+make up
+make build-db
+make worker
 ```

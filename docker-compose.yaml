@@ -37,6 +37,19 @@ services:
       APP_SECRET: '0f4e9fce56a0fac70f6391e974def300'
       MESSENGER_TRANSPORT_DSN: 'amqp://cgenerator:cgenerator@rabbit:5672/%2f/code_generator_queue'
 
+  client:
+    build:
+      context: .
+      dockerfile: docker/client/Dockerfile
+      args:
+        USERID: 1001
+    volumes:
+      - ./client:/var/www
+    ports:
+      - 8080:8080
+    networks:
+      - default
+
   nginx:
     image: nginx:1.23.2
     ports:
